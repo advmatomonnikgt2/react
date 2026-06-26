@@ -372,12 +372,6 @@ function processExperimental(buildDir, version) {
   if (fs.existsSync(buildDir + '/sizes')) {
     fs.renameSync(buildDir + '/sizes', buildDir + '/sizes-experimental');
   }
-  if (fs.existsSync(buildDir + '/bundle-sizes.json')) {
-    fs.renameSync(
-      buildDir + '/bundle-sizes.json',
-      buildDir + '/bundle-sizes-experimental.json'
-    );
-  }
 
   // Delete all other artifacts that weren't handled above. We assume they are
   // duplicates of the corresponding artifacts in the stable channel. Ideally,
@@ -389,10 +383,7 @@ function processExperimental(buildDir, version) {
       pathName !== 'facebook-www' &&
       pathName !== 'sizes-experimental'
     ) {
-      fs.rmSync(path.join(buildDir, pathName), {
-        recursive: true,
-        force: true,
-      });
+      spawnSync('rm', ['-rm', buildDir + '/' + pathName]);
     }
   }
 }
